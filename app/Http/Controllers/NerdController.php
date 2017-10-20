@@ -90,7 +90,7 @@ class NerdController extends Controller
 
         // show the view and pass the nerd to it
         return view('nerds.show')
-            ->with('nerd', $nerd);
+            ->with('nerds', $nerd);
     }
 
     /**

@@ -2,17 +2,7 @@
 
 @section('content')
 <div class="container">
-<!--
-<nav class="navbar navbar-inverse">
-    <div class="navbar-header">
-        <a class="navbar-brand" href="{{ URL::to('master') }}">Master</a>
-    </div>
-    <ul class="nav navbar-nav">
-        <li><a href="{{ URL::to('master') }}">View All Master Keys</a></li>
-        <li><a href="{{ URL::to('master/create') }}">Create a Master Key</a>
-    </ul>
-</nav>
--->
+
 <h1><strong>Master Detail !</strong></h1>
 @if (Session::has('message'))
     <div class="alert alert-info">{{ Session::get('message') }}</div>

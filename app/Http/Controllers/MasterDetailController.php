@@ -155,8 +155,23 @@ class MasterDetailController extends Controller
             $getoldmaster->utility_ID      = $request->get('utility_ID');
             //$nerd->nerd_level = $request->get('nerd_level');
             //$getoldmaster->save();
+            //dd($request);
+            $sub_name = explode("\r\n", $request->get('sub_name'));
             $detail_id = $getoldmaster->id;
-            dd($detail_id);
+            $getdetail = DetailUtility::where('utility_master_id',$detail_id)->get();
+            $tempCheck = $getdetail->count();
+            foreach ($getdetail as $key => $value) {
+                # code...
+                dd($sub_name);
+                if ($tempCheck != 0) {
+                    # code...
+                    $value->utility_sub_name = $sub_name[$tempCheck-1];
+                    $value->save();
+
+                }
+
+            }
+            //dd($getdetail);
             // redirect
             Session::flash('message', 'Successfully updated Master/Details!');
             return Redirect::to('nerds');
