@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
 </head>
 <body>
     <div id="app">
@@ -46,9 +47,31 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                        <li><a href="{{ route('nerds.index') }}">Nerds</a></li>
-                        <li><a href="{{ route('master.index') }}">Master/Details</a></li>
-                    </ul>
+                        <li class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Master/Details
+                                 <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('master.index') }}">View All Keys</a>
+                                        <a href="{{ route('master.create') }}">Create New Key</a>
+                                    </li>
+                                </ul>
+                        </li>
+                        <li class="dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    Nerds
+                                 <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="{{ route('nerds.index') }}">View All Nerds</a>
+                                        <a href="{{ route('nerds.create') }}">Create New Nerd</a>
+                                    </li>
+                                </ul>
+                        </li>
+                    </ul> 
                     <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown navbar-right">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">

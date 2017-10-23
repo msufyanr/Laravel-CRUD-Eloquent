@@ -61,7 +61,6 @@ class MasterDetailController extends Controller
                 ->withInput($request->except('password'));
         } else {
             // store
-            
             $master = new MasterUtility;
             $master->utility_ID = $request->get('utility_ID');
             $master->name       = $request->get('name');
@@ -119,7 +118,6 @@ class MasterDetailController extends Controller
             $tempvalues .= (string) $value->utility_sub_name . "\r\n";
         }
         $master = array('utility_ID' => $getmaster->utility_ID, 'name' => $getmaster->name, 'sub_name' => $tempvalues);
-        //dd($master);
         // show the edit form and pass the nerd
         return view('MasterDetail.edit')
             ->with('masters', $master);
@@ -150,31 +148,38 @@ class MasterDetailController extends Controller
         } else {
             // store
             $getoldmaster = MasterUtility::where('utility_ID',$id)->first();
-            //dd($getoldmaster);
             $getoldmaster->name       = $request->get('name');
             $getoldmaster->utility_ID      = $request->get('utility_ID');
-            //$nerd->nerd_level = $request->get('nerd_level');
-            //$getoldmaster->save();
-            //dd($request);
+            $getoldmaster->save();
             $sub_name = explode("\r\n", $request->get('sub_name'));
             $detail_id = $getoldmaster->id;
             $getdetail = DetailUtility::where('utility_master_id',$detail_id)->get();
             $tempCheck = $getdetail->count();
+            $condition = 0;
             foreach ($getdetail as $key => $value) {
                 # code...
-                dd($sub_name);
-                if ($tempCheck != 0) {
+                if ($condition < $tempCheck) {
                     # code...
-                    $value->utility_sub_name = $sub_name[$tempCheck-1];
-                    $value->save();
-
+                    $value->utility_sub_name = $sub_name[$condition];
+                    $value->delete();
+                    $condition++;
                 }
-
             }
-            //dd($getdetail);
+            //$sub_name = explode("\r\n", $request->get('utility_sub_name'));
+            //dd($sub_name);
+            foreach ($sub_name as $key => $value) {
+                # code...
+                $detail = new DetailUtility;
+                $detail->utility_sub_name = $value;
+                //dd($getoldmaster);
+                $detail->utility_master_id = $getoldmaster->id;
+                $detail->save();
+            }
+
+
             // redirect
             Session::flash('message', 'Successfully updated Master/Details!');
-            return Redirect::to('nerds');
+            return Redirect::to('master');
         }
     }
 
@@ -187,5 +192,15 @@ class MasterDetailController extends Controller
     public function destroy($id)
     {
         //
+        $getmaster = MasterUtility::where('utility_ID',$id)->first();
+        //dd($getmaster);
+        $getdetail = DetailUtility::where('utility_master_id',$id)->get();
+        foreach ($getdetail as $key => $value) {
+            # code...
+            $value->delete();
+        }
+        $getmaster->delete();
+        Session::flash('message', 'Successfully deleted the Key!');
+        return Redirect::to('master');
     }
 }
